@@ -39,7 +39,7 @@ df = pd.merge(df,earnings, left_on=df['InvoiceDate'].apply(lambda x: (x.year, x.
 # df.to_excel('debug.xlsx')
 
 ftse = pd.read_csv("FTSE 100 Historical Data.csv")
-ftse = ftse[['Date', 'Open']]
+ftse = ftse[['Date', 'Price']]
 ftse["Date"] = ftse['Date'].apply(lambda x: parser.parse(x))
 print(ftse)
 
