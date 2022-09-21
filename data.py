@@ -23,3 +23,13 @@ df = pd.merge(df,retail_spending, left_on=df['InvoiceDate'].apply(lambda x: (x.y
          right_on=retail_spending['Time Period'].apply(lambda y: (y.year, y.month)),
          how='left').iloc[:,1:].drop(columns=['Time Period'], axis=1)
 df = df.rename(columns = {'All Retailing excluding automotive fuel': 'Retail Spending Monthly'})
+
+
+# merge earnings data
+earnings = pd.read_csv("earning.csv")
+earnings.rename(columns={ "Time": "Month" }, inplace = True)
+earnings["Month"] = earnings['Month'].apply(lambda x: datetime.strptime(x, "%b-%y"))
+
+df = pd.merge(df,earnings, left_on=df['InvoiceDate'].apply(lambda x: (x.year, x.month)),
+                right_on=earnings['Month'].apply(lambda y: (y.year, y.month)),
+                how='left').iloc[:,1:].drop(columns=['Month'], axis=1)
