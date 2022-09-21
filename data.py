@@ -4,7 +4,7 @@ from dateutil import parser
 
 # convert the time stamps to datetime 
 df = pd.read_csv("online_retail_uk_data.csv")
-df['InvoiceDate'] = df['InvoiceDate'].apply(lambda x: datetime.strptime(x, "%d/%m/%Y %H:%M"))
+df['InvoiceDate'] = df['InvoiceDate'].apply(lambda x: datetime.strptime(x, "%Y-%m-%d %H:%M:%S"))
 
 # read in unemployment data and process
 unemployment = pd.read_csv('unemployment.csv')
@@ -33,3 +33,5 @@ earnings["Month"] = earnings['Month'].apply(lambda x: datetime.strptime(x, "%b-%
 df = pd.merge(df,earnings, left_on=df['InvoiceDate'].apply(lambda x: (x.year, x.month)),
                 right_on=earnings['Month'].apply(lambda y: (y.year, y.month)),
                 how='left').iloc[:,1:].drop(columns=['Month'], axis=1)
+
+print(df)
