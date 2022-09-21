@@ -34,4 +34,19 @@ df = pd.merge(df,earnings, left_on=df['InvoiceDate'].apply(lambda x: (x.year, x.
                 right_on=earnings['Month'].apply(lambda y: (y.year, y.month)),
                 how='left').iloc[:,1:].drop(columns=['Month'], axis=1)
 
+# print(df)
+
+# df.to_excel('debug.xlsx')
+
+ftse = pd.read_csv("FTSE 100 Historical Data.csv")
+ftse = ftse[['Date', 'Open']]
+ftse["Date"] = ftse['Date'].apply(lambda x: parser.parse(x))
+print(ftse)
+
+df = pd.merge(df, ftse, left_on = df['InvoiceDate'].apply(lambda x: (x.year, x.month, x.day)),
+                right_on=ftse['Date'].apply(lambda y: (y.year, y.month, y.day)),
+                how='left').iloc[:,1:].drop(columns=['Date'], axis=1)
+
 print(df)
+
+df.to_csv('merged_dataset.csv')
